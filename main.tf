@@ -8,6 +8,7 @@ module "jenkins" {
   subnet_id = "subnet-0ea509ad4cba242d7" #replace your Subnet
   ami = data.aws_ami.ami_info.id
   user_data = file("jenkins.sh")
+  spot = true
   tags = {
     Name = "jenkins"
   }
@@ -27,7 +28,7 @@ module "jenkins_agent" {
 
   name = "jenkins-agent"
 
-  instance_type          = "t3.small"
+  instance_type          = "t2.micro"
   vpc_security_group_ids = ["sg-0fea5e49e962e81c9"]
   subnet_id = "subnet-0ea509ad4cba242d7"
   ami = data.aws_ami.ami_info.id
