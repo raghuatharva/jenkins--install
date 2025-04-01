@@ -1,20 +1,21 @@
 terraform {
   required_providers {
-    aws = {
-      source = "hashicorp/aws"
-      version = "5.66.0"
+    aws = {                     #provider name      
+      source  = "hashicorp/aws" #source of provider
+      version = "~> 5.84.0"        #version of provider
     }
   }
-
-  backend "s3" {
-    bucket = "81s-remote-state"
-    key    = "expense-tools"
-    region = "us-east-1"
-    dynamodb_table = "81s-locking"
+  backend "s3" { #backend info should always be in terraform block
+    bucket         = "remotestate11"
+    key            = "jenkins_module/terraform.tfstate"
+    region         = "us-east-1" # region of bucket and dynamodb
+    dynamodb_table = "raghu"     #partition key should always be LockID --> case sensitive
   }
 }
 
+# here we configure AWS provider
 provider "aws" {
-  # Configuration options
+  #configuration options
   region = "us-east-1"
 }
+

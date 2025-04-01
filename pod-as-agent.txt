@@ -1,0 +1,52 @@
+What are the jenkins agents you are using?
+===========================================
+VM are perm agents
+	you need to maintain them
+	We need to maintain multiple agents for multiple projects
+
+Temp/Ephemeral agents
+	Docker Containers
+	K8 Pods
+	
+	jenkins-agents --> namespace
+	use base image nodejs for nodejs projects
+	use base image Java for java projects
+	
+
+agent{
+            kubernetes {
+                cloud kubernetesConfig.get(springBootMap.get("uat", "") ? "uat" : "prod").cloud
+                label podLabel
+            yaml """
+spec:
+    containers:
+    - name: jnlp
+      image: sivakmr469/jenkins-maven-pcf:7.0.2
+      imagePullPolicy: Always
+      resources:
+        requests:
+            cpu: 0.5
+            memory: 1Gi
+        limits:
+            cpu: 0.5
+            memory: 1.5Gi
+      ttyEnabled: true
+      workingDir: /var/lib/jenkins
+      alwaysPullImage: true
+
+"""
+            }
+        }
+	
+
+aws eks update-kubeconfig --region us-east-1 --name expense-dev
+
+configmap, deployment, service, ingress
+
+helm install/upgrade backend .
+
+	helm status
+		if success --> end pipeline
+		if failure --> rollback
+			if success --> end pipeline and RCA for why it is issued
+			if failure --> this is disaster --> app is down

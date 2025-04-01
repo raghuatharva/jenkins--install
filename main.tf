@@ -4,11 +4,11 @@ module "jenkins" {
   name = "jenkins"
 
   instance_type          = "t3.small"
-  vpc_security_group_ids = ["sg-0fea5e49e962e81c9"] #replace your SG
-  subnet_id = "subnet-0ea509ad4cba242d7" #replace your Subnet
+  vpc_security_group_ids = ["sg-09acfbc149da9cfe2"] #replace your SG
+  subnet_id = "subnet-0ab10deccd6837413" #replace your Subnet
   ami = data.aws_ami.ami_info.id
   user_data = file("jenkins.sh")
-  spot = true
+  # spot = true
   tags = {
     Name = "jenkins"
   }
@@ -29,8 +29,8 @@ module "jenkins_agent" {
   name = "jenkins-agent"
 
   instance_type          = "t2.micro"
-  vpc_security_group_ids = ["sg-0fea5e49e962e81c9"]
-  subnet_id = "subnet-0ea509ad4cba242d7"
+  vpc_security_group_ids = ["sg-09acfbc149da9cfe2"]
+  subnet_id = "subnet-0ab10deccd6837413"
   ami = data.aws_ami.ami_info.id
   user_data = file("jenkins-agent.sh")
   tags = {
@@ -54,7 +54,7 @@ module "records" {
 
   records = [
     {
-      name    = "jenkins"
+      name    = "jenkins" #port number should also be added for dns also
       type    = "A"
       ttl     = 1
       records = [
